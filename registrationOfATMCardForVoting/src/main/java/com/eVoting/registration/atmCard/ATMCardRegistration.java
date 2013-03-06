@@ -13,7 +13,7 @@ import javax.ws.rs.PathParam;
 public class ATMCardRegistration {
 	@GET
 	@Path("/{ATMCard}")
-	public String registerATMCard(@PathParam("ATMCard") String atmCard){
+	public String registerATMCard(@PathParam("ATMCard") String atmCard) throws Exception{
 		Connection con=null,conEC=null;
 		String alreadyRegistered="",panCard="";
 		System.out.println(atmCard);
@@ -52,6 +52,9 @@ public class ATMCardRegistration {
 				return "Invalid ATM Card";
 		}catch(Exception e){
 			e.printStackTrace();
+		}
+		finally{
+			con.close();
 		}
 		return "";
 	}

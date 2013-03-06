@@ -8,4 +8,8 @@ insert into Customer_Details values('C00001','Kausal',9876543210987654,'Y','BETP
 
 insert into Customer_Details values('C00002','Srivatsan',1234567890098765,'','XYZPM7658A');
 
+alter table Customer_Details add primary key (Customer_ID);
 
+insert into Customer_Authentication values('C00001','1234');
+
+insert into Customer_Authentication values('C00002','5678');

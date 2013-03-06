@@ -38,6 +38,9 @@ public class BankPINAuthentication {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		finally{
+			con.close();
+		}
 		return "fail";
 	}
 }

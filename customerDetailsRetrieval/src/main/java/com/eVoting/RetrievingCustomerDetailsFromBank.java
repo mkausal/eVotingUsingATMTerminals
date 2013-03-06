@@ -13,13 +13,14 @@ import javax.ws.rs.PathParam;
 public class RetrievingCustomerDetailsFromBank {
 	@GET
 	@Path("/{ATMCard}")
-	public String registerVoter(@PathParam("ATMCard") String atmCard){
+	public String registerVoter(@PathParam("ATMCard") String atmCard) throws Exception{
 		String panCard="";
+		Connection con=null;
 		if(atmCard==null)
 			return null;
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/SE_Project_Bank", "root", "Sachin200");
+			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/SE_Project_Bank", "root", "Sachin200");
 			Statement stmt=con.createStatement();
 			ResultSet rs=stmt.executeQuery("select Pan_Card from Customer_Details where ATM_Card_Number="+Long.parseLong(atmCard));
 			while(rs.next()){
@@ -27,6 +28,9 @@ public class RetrievingCustomerDetailsFromBank {
 			}
 		}catch(Exception e){
 			e.printStackTrace();
+		}
+		finally{
+			con.close();
 		}
 		return panCard;
 	}

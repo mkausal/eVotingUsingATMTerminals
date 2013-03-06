@@ -59,7 +59,7 @@
 		</tr>
 		<tr>
 			<td>Enter 4 digit PIN</td>
-			<td><input id="PIN" type="text" name="PIN"></td>
+			<td><input id="PIN" type="password" name="PIN"></td>
 		</tr>
 		<tr>
 			<td colspan=2 align=right><button onclick="authenticate()">Go!</button></td>

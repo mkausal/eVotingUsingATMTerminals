@@ -13,3 +13,9 @@ alter table Customer_Details add primary key (Customer_ID);
 insert into Customer_Authentication values('C00001','1234');
 
 insert into Customer_Authentication values('C00002','5678');
+
+alter table Customer_Details add column Mobile_Number long;
+
+update Customer_Details set Mobile_Number=9535152658 where Customer_ID='C00001';
+
+update Customer_Details set Mobile_Number=8904689528 where Customer_ID='C00002';

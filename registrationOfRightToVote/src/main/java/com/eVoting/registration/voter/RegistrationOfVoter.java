@@ -13,7 +13,7 @@ import javax.ws.rs.PathParam;
 public class RegistrationOfVoter {
 	@GET
 	@Path("/{PAN}")
-	public String registerVoter(@PathParam("PAN") String panCard){
+	public String registerVoter(@PathParam("PAN") String panCard) throws Exception{
 		System.out.println(panCard);
 		String voterID="";
 		Connection con=null;
@@ -37,6 +37,9 @@ public class RegistrationOfVoter {
 				return "Already registered!";
 		}catch(Exception e){
 			e.printStackTrace();
+		}
+		finally{
+			con.close();
 		}
 		return "Some Error, please try again";
 	}

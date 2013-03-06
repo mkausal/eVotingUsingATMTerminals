@@ -84,6 +84,9 @@
 		req.open("GET","http://localhost:8080/registrationOfRightToVote/resources/registerVoter/"+ panCard, true);
 		req.send();
 	}
+	function eVoting(atmCard){
+		window.location.replace('./eVotingMain.jsp?ATMCard='+atmCard);
+	}
 </script>
 </head>
 <body>
@@ -94,7 +97,7 @@ String atmCard=request.getParameter("ATMCard");
 <p align=center>
 <a href="javascript:voterRegistration('<%=atmCard%>')">Voter Registration</a><br>
 <a href="javascript:atmCardRegistration('<%=atmCard%>')">Register this card for Voting</a><br>
-<a href="">Vote</a><br>
+<a href="javascript:eVoting('<%=atmCard%>')"">Vote</a><br>
 <a href="./index.jsp">Exit</a>
 </p>
 </body>
