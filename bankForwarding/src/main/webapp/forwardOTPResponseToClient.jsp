@@ -6,16 +6,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Forwarding response...</title>
 <script type="text/javascript">
-window.onload=function(){
-	queryString=window.location.search;
-	panCard=queryString.substring(1).split('&')[0].split('=')[1];
-	status=queryString.substring(1).split('&')[1].split('=')[1];
+function check(panCard,status){
+	//queryString=window.location.search;
+	//panCard=queryString.substring(1).split('&')[0].split('=')[1];
+	//status=queryString.substring(1).split('&')[1].split('=')[1];
 	if(status=="failed"){
 		alert("Your OTP was wrong, your ATM card is now suspended from voting");
 		deactivateAtBank(panCard);
 	}
 	else
-		window.location.replace('http://localhost:8080/voteUsingATM/captureVote.jsp?PANCard='+panCard+'&election=general&constituency=AP060');
+	{
+		var url="https://localhost:8443/voteUsingATM/captureVote.jsp";
+		var queryString="PANCard="+panCard+"&election=general&constituency=AP060";
+	  	var myForm = document.createElement("form");
+	  	myForm.method="post" ;
+	  	myForm.action = url ;
+	    var myInput = document.createElement("input") ;
+	    myInput.setAttribute("name", queryString.split('&')[0].split('=')[0]) ;
+	    myInput.setAttribute("value", queryString.split('&')[0].split('=')[1]);
+	    myForm.appendChild(myInput) ;
+	    myInput = document.createElement("input") ;
+	    myInput.setAttribute("name", queryString.split('&')[1].split('=')[0]) ;
+	    myInput.setAttribute("value", queryString.split('&')[1].split('=')[1]);
+	    myForm.appendChild(myInput) ;
+	    myInput = document.createElement("input") ;
+	    myInput.setAttribute("name", queryString.split('&')[2].split('=')[0]) ;
+	    myInput.setAttribute("value", queryString.split('&')[2].split('=')[1]);
+	    myForm.appendChild(myInput) ;
+	
+	  document.body.appendChild(myForm) ;
+	  myForm.submit() ;
+	  document.body.removeChild(myForm) ;
+	}
+		//window.location.replace('?PANCard='+panCard+'&election=general&constituency=AP060');
 	//needs getting constituency details from MongoDB and election type to be obtained and sent too
 }
 function deactivateAtBank(panCard){
@@ -25,7 +48,7 @@ function deactivateAtBank(panCard){
 			var resp = req.responseText;
 		if (resp.toString() != "") {
 			if(resp.toString()=="success")
-				window.location.replace('http://localhost:8080/voteUsingATM/index.jsp');
+				window.location.replace('https://localhost:8443/voteUsingATM/index.jsp');
 		}
 		}
 		if (req.readyState != 4)
@@ -36,7 +59,7 @@ function deactivateAtBank(panCard){
 		}
 	}
 	// Request successful, read the response
-	req.open("GET","http://localhost:8080/atmDeactivation/resources/deactivateATM/"+panCard, true);
+	req.open("GET","https://localhost:8443/atmDeactivation/resources/deactivateATM/"+panCard, true);
 	req.send();
 }
 function createRequest() {
@@ -56,11 +79,15 @@ function createRequest() {
 	return result;
 }
 </script>
-</head>
-<body>
 <%
 String panCard=request.getParameter("PANCard");
 String status=request.getParameter("status");
 %>
+<SCRIPT type="text/javascript">
+    window.history.forward();
+    function noBack(panCard,status) { window.history.forward(); check(panCard,status);}
+</SCRIPT>
+</head>
+<body onload="noBack('<%=panCard%>','<%=status%>');">
 </body>
 </html>

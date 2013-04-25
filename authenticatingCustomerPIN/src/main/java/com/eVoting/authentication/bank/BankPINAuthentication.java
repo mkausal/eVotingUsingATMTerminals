@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
@@ -15,6 +16,7 @@ public class BankPINAuthentication {
 	@GET
 	@Path("/{ATMCard}/{PIN}")
 	public String authenticateCustomer(@PathParam("ATMCard") String atmCard,@PathParam("PIN") String pin) throws Exception{
+		System.out.println("In");
 		String customerID="",pinInDB="";
 		Connection con=null;
 		try{

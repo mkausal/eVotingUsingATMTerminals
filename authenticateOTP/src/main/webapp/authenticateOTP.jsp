@@ -1,4 +1,5 @@
 <html>
+<head>
 <title>Authenticating OTP</title>
 <script type="text/javascript">
 function createRequest() {
@@ -17,16 +18,29 @@ function createRequest() {
 	}
 	return result;
 }
-function authenticate(atmCard,otp) {
+function authenticate(panCard,otp) {
 	var req = createRequest(); // defined above
 	req.onreadystatechange = function() {
 		if (req.readyState == 4 && req.status == 200) {
 			var resp = req.responseText;
 		if (resp.toString() != "") {
-			if(resp.toString()=="authenticated")
-				window.location.replace('http://localhost:8080/bankForwarding/forwardOTPResponseToClient.jsp?PANCard='+panCard+'&status=authenticated');
-			else
-				window.location.replace('http://localhost:8080/bankForwarding/forwardOTPResponseToClient.jsp?PANCard='+panCard+'&status=failed');
+			var url="https://localhost:8443/bankForwarding/forwardOTPResponseToClient.jsp";
+			var queryString='PANCard='+panCard+'&status='+resp.toString();
+		  	var myForm = document.createElement("form");
+		  	myForm.method="post" ;
+		  	myForm.action = url ;
+		    var myInput = document.createElement("input") ;
+		    myInput.setAttribute("name", queryString.split('&')[0].split('=')[0]) ;
+		    myInput.setAttribute("value", queryString.split('&')[0].split('=')[1]);
+		    myForm.appendChild(myInput) ;
+		    myInput = document.createElement("input") ;
+		    myInput.setAttribute("name", queryString.split('&')[1].split('=')[0]) ;
+		    myInput.setAttribute("value", queryString.split('&')[1].split('=')[1]);
+		    myForm.appendChild(myInput) ;
+
+		  document.body.appendChild(myForm) ;
+		  myForm.submit() ;
+		  document.body.removeChild(myForm) ;
 			//alert(panCard);
 			//window.location.replace('http://localhost:8080/authenticateOTP/authenticateOTP.jsp?PANCard='+panCard+'&otp='+otp);
 		}
@@ -39,22 +53,20 @@ function authenticate(atmCard,otp) {
 		}
 	}
 	// Request successful, read the response
-	req.open("GET","http://localhost:8080/authenticateOTP/resources/OTPAuthentication/"+panCard+"/"+otp, true);
+	req.open("GET","https://localhost:8443/authenticateOTP/resources/OTPAuthentication/"+panCard+"/"+otp, true);
 	req.send();
 }
-var i=0;
-function bodyOnLoad(){
-	queryString=window.location.search;
-	panCard=queryString.substring(1).split('&')[0].split('=')[1];
-	otp=queryString.substring(1).split('&')[1].split('=')[1];
-	i++;
-	if(document.refreshForm.visited.value==""){
-		authenticate(panCard,otp);
-		document.refreshForm.visited.value="1";
-	}
-}
 </script>
-<body onLoad="javascript:bodyOnLoad()">
+<%
+String panCard=request.getParameter("PANCard");
+String otp=request.getParameter("otp");
+%>
+<SCRIPT type="text/javascript">
+window.history.forward();
+function noBack(panCard,otp) { window.history.forward(); authenticate(panCard,otp);}
+</SCRIPT>
+</head>
+<body onload="noBack('<%=panCard%>','<%=otp%>');">
 <h2 align=center>Voting - ATM</h2>
 	<p align=center>EC server authenticating your OTP...</p>
 	<br>

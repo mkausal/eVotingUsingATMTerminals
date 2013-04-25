@@ -4,6 +4,8 @@ use SE_Project_Bank;
 
 create table Customer_Details (Customer_ID varchar(20),Customer_Name varchar(20),ATM_Card_Number long,Voting_Right char,Pan_Card varchar(10));
 
+create table Customer_Authentication (Customer_ID varchar(20) references Customer_Details(Customer_ID), PIN char(4));
+
 insert into Customer_Details values('C00001','Kausal',9876543210987654,'Y','BETPM9690A');
 
 insert into Customer_Details values('C00002','Srivatsan',1234567890098765,'','XYZPM7658A');

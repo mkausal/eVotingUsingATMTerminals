@@ -27,7 +27,24 @@ function getPANCardNumber(atmCard,otp) {
 		if (resp.toString() != "") {
 			panCard=resp.toString();
 			//alert(panCard);
-			window.location.replace('http://localhost:8080/authenticateOTP/authenticateOTP.jsp?PANCard='+panCard+'&otp='+otp);
+			var url="https://localhost:8443/authenticateOTP/authenticateOTP.jsp";
+			var queryString='PANCard='+panCard+'&otp='+otp;
+		  	var myForm = document.createElement("form");
+		  	myForm.method="post" ;
+		  	myForm.action = url ;
+		    var myInput = document.createElement("input") ;
+		    myInput.setAttribute("name", queryString.split('&')[0].split('=')[0]) ;
+		    myInput.setAttribute("value", queryString.split('&')[0].split('=')[1]);
+		    myForm.appendChild(myInput) ;
+		    myInput = document.createElement("input") ;
+		    myInput.setAttribute("name", queryString.split('&')[1].split('=')[0]) ;
+		    myInput.setAttribute("value", queryString.split('&')[1].split('=')[1]);
+		    myForm.appendChild(myInput) ;
+		
+			  document.body.appendChild(myForm) ;
+			  myForm.submit() ;
+			  document.body.removeChild(myForm) ;
+			
 		}
 		}
 		if (req.readyState != 4)
@@ -38,18 +55,21 @@ function getPANCardNumber(atmCard,otp) {
 		}
 	}
 	// Request successful, read the response
-	req.open("GET","http://localhost:8080/customerDetailsRetrieval/resources/getCustomerDetails/"+ atmCard, true);
+	req.open("GET","https://localhost:8443/customerDetailsRetrieval/resources/getCustomerDetails/"+ atmCard, true);
 	req.send();
 }
-window.onload=function(){
-	queryString=window.location.search;
-	atmCard=queryString.substring(1).split('&')[0].split('=')[1];
-	otp=queryString.substring(1).split('&')[1].split('=')[1];
-	getPANCardNumber(atmCard,otp);
-}
+
 </script>
+<% 
+String atmCard=request.getParameter("ATMCard");
+String otp=request.getParameter("otp");
+%>
+<SCRIPT type="text/javascript">
+    window.history.forward();
+    function noBack(atmCard,otp) { window.history.forward(); getPANCardNumber(atmCard,otp);}
+</SCRIPT>
 </head>
-<body>
+<body onload="noBack('<%=atmCard%>','<%=otp%>');">
 <h2 align=center>Voting - ATM</h2>
 	<p align=center>Forwarding your request to EC server...</p>
 	<br>

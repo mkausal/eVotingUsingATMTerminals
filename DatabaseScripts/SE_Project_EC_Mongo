@@ -1,0 +1,13 @@
+use SE_Project_EC;
+i={"election":"general","constituencyID":"AP032","candidateID":"001","candidateName":"Mr.XYZ","party":"Congress"}
+db.candidatesList.insert(i)
+i={"election":"general","constituencyID":"AP032","candidateID":"002","candidateName":"Mr.ABC","party":"BJP"}
+db.candidatesList.insert(i)
+i={"election":"general","constituencyID":"AP032","candidateID":"003","candidateName":"Mr.QWE","party":"TDP"}
+db.candidatesList.insert(i)
+i={"election":"state","constituencyID":"AP132","candidateID":"001","candidateName":"Mr.MNB","party":"Congress"}
+db.candidatesList.insert(i)
+i={"election":"general","constituencyID":"AP132","candidateID":"002","candidateName":"Mr.LKJ","party":"BJP"}
+db.candidatesList.insert(i)
+i={"election":"general","constituencyID":"AP132","candidateID":"003","candidateName":"Mr.SRT","party":"TDP"}
+db.candidatesList.insert(i)

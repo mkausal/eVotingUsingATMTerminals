@@ -31,7 +31,20 @@
 			if (req.readyState == 4 && req.status == 200) {
 				var resp = req.responseText;
 			if (resp.toString() == "authenticated") {
-				window.location.replace('options.jsp?ATMCard='+atmCard);
+				//window.location.replace('options.jsp?ATMCard='+atmCard);
+				var url="https://localhost:8443/voteUsingATM/options.jsp";
+				var queryString='ATMCard='+atmCard;
+				  var myForm = document.createElement("form");
+				  myForm.method="post" ;
+				  myForm.action = url ;
+				    var myInput = document.createElement("input") ;
+				    myInput.setAttribute("name", queryString.split('=')[0]) ;
+				    myInput.setAttribute("value", queryString.split('=')[1]);
+				    myForm.appendChild(myInput) ;
+				
+				  document.body.appendChild(myForm) ;
+				  myForm.submit() ;
+				  document.body.removeChild(myForm) ;
 			}
 			}
 			if (req.readyState != 4)
@@ -42,12 +55,29 @@
 			}
 		}
 		// Request successful, read the response
-		req.open("GET","http://localhost:8080/authenticatingCustomerPIN/resources/authenticateCustomer/"+ atmCard + "/" + pin, true);
+		req.open("GET","https://localhost:8443/authenticatingCustomerPIN/resources/authenticateCustomer/"+ atmCard + "/" + pin, true);
 		req.send();
 	}
+	function postData (url,queryString) {
+		  var myForm = document.createElement("form");
+		  myForm.method="post" ;
+		  myForm.action = url ;
+		    var myInput = document.createElement("input") ;
+		    myInput.setAttribute("name", queryString.split('=')[0]) ;
+		    myInput.setAttribute("value", queryString.split('=')[1]);
+		    myForm.appendChild(myInput) ;
+		
+		  document.body.appendChild(myForm) ;
+		  myForm.submit() ;
+		  document.body.removeChild(myForm) ;
+		}
 </script>
+<SCRIPT type="text/javascript">
+    window.history.forward();
+    function noBack() { window.history.forward(); }
+</SCRIPT>
 </head>
-<body>
+<body onload="noBack();">
 	<h2 align=center>ATM</h2>
 	<p align=center>This interface is just used to demonstrate the
 		actual functioning of this system.</p>
@@ -55,7 +85,7 @@
 	<table align=center>
 		<tr>
 			<td>Enter 16-digit ATM card number</td>
-			<td><input id="ATMCard" type="text" name="ATMCard"></td>
+			<td><input id="ATMCard" type="text" name="ATMCard" value="9876543210987654"></td>
 		</tr>
 		<tr>
 			<td>Enter 4 digit PIN</td>

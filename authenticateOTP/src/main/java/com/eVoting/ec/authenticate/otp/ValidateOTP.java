@@ -15,6 +15,7 @@ public class ValidateOTP {
 	@Path("/{PANCard}/{OTP}")
 	public String authenticateOTP(@PathParam("PANCard") String panCard,@PathParam("OTP") String otp) throws Exception{
 		Connection con=null;
+		System.out.println(panCard);
 		String voterID="";
 		try{
 			Class.forName("com.mysql.jdbc.Driver");

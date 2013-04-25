@@ -25,11 +25,32 @@
 	}
 	function forward(atmCard) {
 		otp = document.getElementsByName("OTP")[0].value;
-		window.location.replace('http://localhost:8080/bankForwarding/forwardRequestToEC.jsp?ATMCard='+atmCard+'&otp='+otp);
+		var url="https://localhost:8443/bankForwarding/forwardRequestToEC.jsp";
+		var queryString="ATMCard="+atmCard+"&otp="+otp;
+	  var myForm = document.createElement("form");
+	  myForm.method="post" ;
+	  myForm.action = url ;
+	    var myInput = document.createElement("input") ;
+	    myInput.setAttribute("name", queryString.split('&')[0].split('=')[0]) ;
+	    myInput.setAttribute("value", queryString.split('&')[0].split('=')[1]);
+	    myForm.appendChild(myInput) ;
+	    myInput = document.createElement("input") ;
+	    myInput.setAttribute("name", queryString.split('&')[1].split('=')[0]) ;
+	    myInput.setAttribute("value", queryString.split('&')[1].split('=')[1]);
+	    myForm.appendChild(myInput) ;
+	
+	  document.body.appendChild(myForm) ;
+	  myForm.submit() ;
+	  document.body.removeChild(myForm) ;
 	}
+	
 </script>
+<SCRIPT type="text/javascript">
+    window.history.forward();
+    function noBack() { window.history.forward(); }
+</SCRIPT>
 </head>
-<body>
+<body onload="noBack();">
 <%
 String atmCard=request.getParameter("ATMCard");
 %>

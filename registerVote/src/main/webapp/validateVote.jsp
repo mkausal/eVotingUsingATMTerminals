@@ -23,37 +23,34 @@ function createRequest() {
 	return result;
 }
 
-window.onload=function(){
-	queryString=window.location.search;
-	panCard=queryString.substring(1).split('&')[0].split('=')[1];
-	election=queryString.substring(1).split('&')[1].split('=')[1];
-	constituency=queryString.substring(1).split('&')[2].split('=')[1];
-	candidateID=queryString.substring(1).split('&')[3].split('=')[1];
-	pin=queryString.substring(1).split('&')[4].split('=')[1];
-	validate(panCard,election,constituency,candidateID,pin);
-}
-function validate(panCard,election,constituency,candidateID,pin){
-	var req = createRequest(); // defined above
-	req.onreadystatechange = function() {
-		if (req.readyState == 4 && req.status == 200) {
-			var resp = req.responseText;
-		if (resp.toString() != "") {
-			alert(resp.toString());
-			window.location.replace('http://localhost:8080/voteUsingATM/index.jsp');
-		}
-		}
-		if (req.readyState != 4)
-			return; // Not there yet
-		if (req.status != 200) {
-			alert("Server failed to respond, please try again!");
-			return;
-		}
-	}
+
+function validate(message){
+	var url="https://localhost:8443/registerVote/resources/registerVote";
+	var myForm = document.createElement("form");
+  	myForm.method = "post" ;
+  	myForm.action = url ;
+    var myInput = document.createElement("input") ;
+    myInput.setAttribute("type", "hidden") ;
+    myInput.setAttribute("name", "message") ;
+    myInput.setAttribute("value", message);
+    myForm.appendChild(myInput) ;
+    document.body.appendChild(myForm) ;
+    myForm.submit() ;
+    document.body.removeChild(myForm) ;
 	// Request successful, read the response
-	req.open("GET","http://localhost:8080/registerVote/resources/registerVote/"+panCard+"/"+election+"/"+constituency+"/"+candidateID+"/"+pin, true);
-	req.send();
+	//req.open("GET","https://localhost:8443/registerVote/resources/registerVote/", true);
+	//req.send();
 }
 </script>
+<%
+String message=request.getParameter("message");
+%>
+<SCRIPT type="text/javascript">
+    window.history.forward();
+    function noBack(message) { window.history.forward(); validate(message);}
+</SCRIPT>
+</head>
+<body onload="noBack('<%=message%>');">
 </head>
 <body>
 
